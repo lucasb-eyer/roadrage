@@ -1,6 +1,6 @@
 
-set(INCROOT ${CMAKE_SOURCE_DIR}/include/SFML/Graphics)
-set(SRCROOT ${CMAKE_SOURCE_DIR}/src/SFML/Graphics)
+set(INCROOT ${PROJECT_SOURCE_DIR}/include/SFML/Graphics)
+set(SRCROOT ${PROJECT_SOURCE_DIR}/src/SFML/Graphics)
 
 # all source files
 set(SRC
@@ -78,7 +78,7 @@ if (WINDOWS)
     set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${CMAKE_SOURCE_DIR}/extlibs/headers/jpeg")
 
 elseif (MACOSX)
-    
+
     # Add freetype search path
     #set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${CMAKE_SOURCE_DIR}/extlibs/libs-osx/include/")
     set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${CMAKE_SOURCE_DIR}/extlibs/headers/freetype")

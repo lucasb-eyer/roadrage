@@ -39,18 +39,30 @@
 #if defined(SFML_SYSTEM_WINDOWS)
 
     #include <windows.h>
-    #include <GL/gl.h>
-    #include <GL/glu.h>
+    #if defined(SFML_USE_GL3)
+        #include <GL3/gl3.h>
+    #else
+        #include <GL/gl.h>
+        #include <GL/glu.h>
+    #endif
 
 #elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD)
 
-    #include <GL/gl.h>
-    #include <GL/glu.h>
+    #if defined(SFML_USE_GL3)
+        #include <GL3/gl3.h>
+    #else
+        #include <GL/gl.h>
+        #include <GL/glu.h>
+    #endif
 
 #elif defined(SFML_SYSTEM_MACOS)
 
-    #include <OpenGL/gl.h>
-    #include <OpenGL/glu.h>
+    #if defined(SFML_USE_GL3)
+        #include <GL3/gl3.h>
+    #else
+        #include <OpenGL/gl.h>
+        #include <OpenGL/glu.h>
+    #endif
 
 #endif
 
