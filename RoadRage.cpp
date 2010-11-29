@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 
+#include "3d/Math/Matrix.h"
 
 ////////////////////////////////////////////////////////////
 /// Entry point of application

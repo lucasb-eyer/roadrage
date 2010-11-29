@@ -9,8 +9,19 @@ endif()
 # project name
 project(roadrage)
 
+# Enable C++0x and a bit more.
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++0x -Wno-non-virtual-dtor -Wall -O0 -pg -fstack-protector-all -fpermissive")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++0x -Wall -s -O2")
+elseif(MSVC)
+endif()
+
 # all source files
-set(SRC ${PROJECT_SOURCE_DIR}/RoadRage.cpp)
+set(SRC ${PROJECT_SOURCE_DIR}/RoadRage.cpp
+        ${PROJECT_SOURCE_DIR}/3d/Math/Matrix.cpp
+        ${PROJECT_SOURCE_DIR}/3d/Math/Quaternion.cpp
+        ${PROJECT_SOURCE_DIR}/3d/Math/Vector.cpp
+   )
 
 # find OpenGL and GLU
 find_package(OpenGL REQUIRED)
