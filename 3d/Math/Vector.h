@@ -57,9 +57,6 @@ public:
 
     /// Creates a vector with all components set to 0 except w set to 1.
     Vector();
-    /// Creates a vector.
-    /// \param in_fVal Initialises all components of the vector to this value.
-    Vector(float in_fVal);
     /// Creates a vector based on the contents of a float array.
     /// \param in_v The three coordinates of the vector.
     Vector(float in_v[3]);
