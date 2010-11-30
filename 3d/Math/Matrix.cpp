@@ -466,6 +466,11 @@ void AffineMatrix::operator *=(const AffineMatrix& o)
     this->operator=(*this * o);
 }
 
+General4x4Matrix AffineMatrix::operator*(const General4x4Matrix& o) const
+{
+    return General4x4Matrix(*this) * o;
+}
+
 /////////////////////////////////
 /////////////////////////////////
 //// The General Matrix part ////

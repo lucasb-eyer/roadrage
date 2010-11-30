@@ -59,9 +59,9 @@ void Configuration::parse(TiXmlDocument& doc)
     }
 }
 
-std::string Configuration::get(const std::string& in_optName)
+std::string Configuration::get(const std::string& in_optName) const
 {
-    return m_opts[in_optName];
+    return m_opts.at(in_optName);
 }
 
 Configuration& Configuration::set(const std::string& in_optName, const std::string& value)

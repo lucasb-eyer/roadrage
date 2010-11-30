@@ -19,7 +19,7 @@ namespace RoadRage {
         Configuration(const Options& in_options);
         Configuration(const DefaultOptions& in_defaults);
 
-        std::string get(const std::string& in_optName);
+        std::string get(const std::string& in_optName) const;
         Configuration& set(const std::string& in_optName, const std::string& value);
 
         void save();

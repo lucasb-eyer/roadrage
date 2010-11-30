@@ -24,12 +24,17 @@ set(SRC ${PROJECT_SOURCE_DIR}/RoadRage.cpp
         ${PROJECT_SOURCE_DIR}/3d/Math/Quaternion.cpp
         ${PROJECT_SOURCE_DIR}/3d/Math/Vector.cpp
         ${PROJECT_SOURCE_DIR}/3d/BuiltinModel.cpp
+        ${PROJECT_SOURCE_DIR}/3d/Camera.cpp
         ${PROJECT_SOURCE_DIR}/3d/OpenGLWrapper.cpp
         ${PROJECT_SOURCE_DIR}/3d/Shader.cpp
         ${PROJECT_SOURCE_DIR}/3d/VertexArrayObject.cpp
         ${PROJECT_SOURCE_DIR}/Conf/Configuration.cpp
         ${PROJECT_SOURCE_DIR}/Conf/DefaultOptions.cpp
         ${PROJECT_SOURCE_DIR}/Conf/RoadRageDefaultSettings.cpp
+        ${PROJECT_SOURCE_DIR}/Game/Avatar.cpp
+        ${PROJECT_SOURCE_DIR}/Game/Game.cpp
+        ${PROJECT_SOURCE_DIR}/Game/GameClock.cpp
+        ${PROJECT_SOURCE_DIR}/Game/Level.cpp
         ${PROJECT_SOURCE_DIR}/Utilities/Path.cpp
    )
 

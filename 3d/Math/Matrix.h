@@ -266,6 +266,14 @@ public:
     /// \note Of course, for the inverse the multiplication is done from the left.
     void operator *=(const AffineMatrix& o);
 
+    /// Returns the product of this matrix with another general one. \a o gets
+    /// multiplied on the right of this.
+    /// \param o The other matrix that has to be multiplied from the right.
+    /// \return The matrix resulting from *this * \a o.
+    /// \note Of course, for the inverse the multiplication is done from the left.
+    /// \note The result is a general matrix, not an affine one anymore.
+    General4x4Matrix operator *(const General4x4Matrix& o) const;
+
 private:
     /// The upper-left 3x3 part of the matrix-data, used to pass it to
     /// OpenGl as a pointer.
