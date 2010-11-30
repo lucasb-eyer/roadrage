@@ -1,14 +1,14 @@
 #pragma once
 
-#include "GameClock.h"
+#include "Entity.h"
 
-#include "3d/Math/Vector.h"
 #include "3d/BuiltinModel.h"
 
 namespace RoadRage {
 
-class Civilian {
+class Civilian : public MobileEntity {
 public:
+    // Civilians travel at constant speed for now!
     Civilian(Vector pos, Vector vel, float orientation, float angularVel, ShaderManager& shadmgr);
     virtual ~Civilian();
 
@@ -17,11 +17,6 @@ public:
 
 private:
     BoxModel m_model;
-
-    Vector m_position;
-    Vector m_velocity;
-    float m_fOrientation;
-    float m_fAngularVelocity;
 };
 
 }

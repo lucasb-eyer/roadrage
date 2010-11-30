@@ -2,6 +2,11 @@
 
 #include "Utilities/String.h"
 
+#include <SFML/System/Randomizer.hpp>
+
+#include <random>
+#include <functional>
+
 using namespace RoadRage;
 
 Level::Level(const Configuration& in_settings, const std::string& in_sName)
@@ -12,6 +17,25 @@ Level::Level(const Configuration& in_settings, const std::string& in_sName)
     , m_pAvatar(new Avatar(m_shaderManager))
 {
     m_cam.pos(Vector(0.5f, 1.5f, 5.0f));
+
+    // Create the randomization engine with a seed.
+    std::mt19937 engine(sf::Randomizer::GetSeed());
+    std::variate_generator<std::mt19937&, std::normal_distribution<>> generatorX(engine,std::normal_distribution<>(0.0f, 5.0f));
+    std::variate_generator<std::mt19937&, std::normal_distribution<>> generatorY(engine,std::normal_distribution<>(0.0f, 5.0f));
+    std::variate_generator<std::mt19937&, std::normal_distribution<>> generatorVelZ(engine,std::normal_distribution<>(0.0f, 1.0f));
+    std::variate_generator<std::mt19937&, std::normal_distribution<>> generatorOri(engine,std::normal_distribution<>(0.0f, 30.0f*deg2rad));
+    std::variate_generator<std::mt19937&, std::normal_distribution<>> generatorOriVel(engine,std::normal_distribution<>(0.0f, 30.0f*deg2rad));
+
+    // This causes an endless loop somehow, even though it should work according to manuals.
+//     auto r_norm = std::bind(rand_norm, eng);
+
+    for(int i = 0 ; i < 20 ; ++i) {
+        Vector pos(generatorX(), generatorY(), -5.0f);
+        Vector vel(0.0f, 0.0f, generatorVelZ());
+        float ori = generatorOri();
+        float oriVel = generatorOriVel();
+        m_civs.push_back(new Civilian(pos, vel, ori, oriVel, m_shaderManager));
+    }
 }
 
 Level::Ptr Level::load(const Configuration& in_settings, const std::string& in_sName)

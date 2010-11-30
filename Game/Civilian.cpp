@@ -1,15 +1,14 @@
 #include "Civilian.h"
 
+#include <3d/Math/Matrix.h>
+
 #include <SFML/System/Clock.hpp>
 
 using namespace RoadRage;
 
 Civilian::Civilian(Vector pos, Vector vel, float orientation, float angularVel, ShaderManager& shadmgr)
-    : m_model(shadmgr)
-    , m_position(pos)
-    , m_velocity(vel)
-    , m_fOrientation(orientation)
-    , m_fAngularVelocity(angularVel)
+    : MobileEntity(pos, vel, Vector(0.0f, 0.0f, 0.0f), orientation, angularVel, 0.0f)
+    , m_model(shadmgr)
 {
 }
 
@@ -19,10 +18,10 @@ Civilian::~Civilian()
 
 void Civilian::think(const GameClock& clock)
 {
-    m_position += m_velocity * clock.deltaT();
+    MobileEntity::think(clock);
 }
 
 void Civilian::render(const GameClock& /*clock*/, const General4x4Matrix& in_viewProj)
 {
-    m_model.render(in_viewProj);
+    m_model.render(in_viewProj * this->getModelMatrix());
 }
