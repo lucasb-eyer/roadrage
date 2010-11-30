@@ -31,9 +31,12 @@ Level::Level(const Configuration& in_settings, const std::string& in_sName)
 
     for(int i = 0 ; i < 20 ; ++i) {
         Vector pos(generatorX(), generatorY(), -5.0f);
-        Vector vel(0.0f, 0.0f, generatorVelZ());
+/*        Vector vel(0.0f, 0.0f, generatorVelZ());
         float ori = generatorOri();
-        float oriVel = generatorOriVel();
+        float oriVel = generatorOriVel();*/
+        Vector vel(0.0f, 0.0f, 0.0f);
+        float ori = 0.0f;
+        float oriVel = 0.0f;
         m_civs.push_back(new Civilian(pos, vel, ori, oriVel, m_shaderManager));
     }
 }
