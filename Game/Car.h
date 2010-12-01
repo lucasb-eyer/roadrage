@@ -2,10 +2,23 @@
 
 #include "Game/Entity.h"
 
+#include "Utilities/StateMachine.h"
+
 namespace RoadRage {
 
-class Car : public MobileEntity {
+namespace CarState {
+    enum Enum {
+        Standing,
+        Rolling,
+        Driving,
+        Breaking,
+        Destroyed
+    };
+}
+
+class Car : public MobileEntity, public StateMachine<RoadRage::CarState::Enum> {
 public:
+
     Car(Vector in_pos, Vector in_vel, Vector in_accel = Vector(0.0f, 0.0f, 0.0f), float in_orientation = 0.0f, float in_angularVel = 0.0f, float in_angularAccel = 0.0f, Vector in_scale = Vector(1.0f, 1.0f, 1.0f), Vector in_scaleVel = Vector(0.0f, 0.0f, 0.0f), Vector in_scaleAccel = Vector(0.0f, 0.0f, 0.0f));
     virtual ~Car();
 
@@ -38,6 +51,10 @@ public:
 
     float maxSteeringVel() const;
     Car& maxSteeringVel(float v);
+
+protected:
+    virtual bool onLeavingCurrentState();
+    virtual bool onEnteringNewState(CarState::Enum next);
 
 private:
     float m_steeringAngle;

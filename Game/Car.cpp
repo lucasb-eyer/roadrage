@@ -8,6 +8,7 @@ using namespace RoadRage;
 
 Car::Car(Vector in_pos, Vector in_vel, Vector in_accel, float in_orientation, float in_angularVel, float in_angularAccel, Vector in_scale, Vector in_scaleVel, Vector in_scaleAccel)
     : MobileEntity(in_pos, in_vel, in_accel, in_orientation, in_angularVel, in_angularAccel, in_scale, in_scaleVel, in_scaleAccel)
+    , StateMachine<CarState::Enum>(CarState::Standing)
     , m_steeringAngle(0.0f)
     , m_speed(0.0f)
     , m_accel(0.0f)
@@ -27,6 +28,26 @@ Car::~Car()
 
 void Car::think(const GameClock& in_clock)
 {
+    switch(this->state()) {
+    case CarState::Driving:
+        // If we are driving, constantly increase the acceleration.
+        this->accel(this->accel() + 5.0f*kmhs2mss*in_clock.deltaT());
+        break;
+    case CarState::Breaking:
+        // I say, we break with a constant force.
+        this->accel(-50.0f*kmhs2mss);
+        break;
+    case CarState::Rolling:
+        // They say the amount of friction is proportional to the velocity...
+        static const float fDynFrictionCoeff = 1.0f;
+        this->accel(-this->speed()*fDynFrictionCoeff);
+        break;
+    case CarState::Standing:
+        break;
+    case CarState::Destroyed:
+        break;
+    }
+
     // Update the speed according to the acceleration
     this->speed(this->speed() + this->accel() * in_clock.deltaT());
 
@@ -44,8 +65,27 @@ void Car::think(const GameClock& in_clock)
     // Then, add the "driving" movements on top of it.
     this->pos(this->pos() + drivingVel * in_clock.deltaT());
 
+    /// TODO: use the steering angle for the tires, not the whole car!
     if(std::abs(this->steeringAngle()) < this->maxSteeringAngle())
         this->ori(this->ori() + this->steeringVel() * in_clock.deltaT());
+
+
+    // After the thinking, we may have entered a new state.
+    switch(this->state()) {
+    case CarState::Driving:
+        break;
+    case CarState::Breaking:
+        break;
+    case CarState::Rolling:
+        // May it be that we're done with rolling?
+        if(this->speed() < 1.0f*kmh2ms)
+            this->state(CarState::Standing);
+        break;
+    case CarState::Standing:
+        break;
+    case CarState::Destroyed:
+        break;
+    }
 }
 
 float Car::steeringAngle() const
@@ -58,11 +98,10 @@ Car& Car::steeringAngle(float v)
     while(v > 360.0f*deg2rad) v -= 360.0f*deg2rad;
     while(v < -360.0f*deg2rad) v += 360.0f*deg2rad;
 
-    // Check for too small angles (if there is no angular velocity)
+    // For very small angles (<1°), we just stick to 0°.
     if(nearZero(v, 1.0f*deg2rad) && nearZero(this->steeringVel()))
         v = 0.0f;
 
-    // But also check for too big angles
     clamp(v, -this->maxSteeringAngle(), this->maxSteeringAngle());
 
     m_steeringAngle = v;
@@ -76,11 +115,10 @@ float Car::steeringVel() const
 
 Car& Car::steeringVel(float v)
 {
-    // Check for too small steering velocities
-    if(nearZero(v, 1.0f*deg2rad))
+    // For very small steering velocities angles (<0.1°/s), we stand still.
+    if(nearZero(v, .1f*deg2rad))
         v = 0.0f;
 
-    // But also for too big ones
     clamp(v, -this->maxSteeringVel(), this->maxSteeringVel());
 
     m_steeringVel = v;
@@ -94,11 +132,6 @@ float Car::speed() const
 
 Car& Car::speed(float v)
 {
-    // Check for too small speeds (but only when there is no acceleration)
-    if(nearZero(v, 0.2f) && nearZero(this->accel()))
-        v = 0.0f;
-
-    // But also for too big speeds
     clamp(v, this->minSpeed(), this->maxSpeed());
 
     m_speed = v;
@@ -112,11 +145,6 @@ float Car::accel() const
 
 Car& Car::accel(float v)
 {
-    // Check for too small acceleration
-    if(nearZero(v, 0.1f))
-        v = 0.0f;
-
-    // But also for too big acceleration
     clamp(v, this->minAccel(), this->maxAccel());
 
     m_accel = v;
@@ -133,10 +161,7 @@ Car& Car::maxSteeringAngle(float v)
     while(v > 360.0f*deg2rad) v -= 360.0f*deg2rad;
     while(v < -360.0f*deg2rad) v += 360.0f*deg2rad;
 
-    if(nearZero(v, 1.0f*deg2rad))
-        m_maxSteeringAngle = 0.0f;
-    else
-        m_maxSteeringAngle = v;
+    m_maxSteeringAngle = v;
 
     return *this;
 }
@@ -148,11 +173,7 @@ float Car::maxSteeringVel() const
 
 Car& Car::maxSteeringVel(float v)
 {
-    if(nearZero(v, 1.0f*deg2rad))
-        m_maxSteeringVel = 0.0f;
-    else
-        m_maxSteeringVel = v;
-
+    m_maxSteeringVel = v;
     return *this;
 }
 
@@ -163,11 +184,7 @@ float Car::maxSpeed() const
 
 Car& Car::maxSpeed(float v)
 {
-    if(nearZero(v, 0.2f))
-        m_maxSpeed = 0.0f;
-    else
-        m_maxSpeed = v;
-
+    m_maxSpeed = v;
     return *this;
 }
 
@@ -178,11 +195,7 @@ float Car::minSpeed() const
 
 Car& Car::minSpeed(float v)
 {
-    if(nearZero(v, 0.2f))
-        m_minSpeed = 0.0f;
-    else
-        m_minSpeed = v;
-
+    m_minSpeed = v;
     return *this;
 }
 
@@ -193,11 +206,7 @@ float Car::maxAccel() const
 
 Car& Car::maxAccel(float v)
 {
-    if(nearZero(v, 0.1f))
-        m_maxAccel = 0.0f;
-    else
-        m_maxAccel = v;
-
+    m_maxAccel = v;
     return *this;
 }
 
@@ -208,10 +217,31 @@ float Car::minAccel() const
 
 Car& Car::minAccel(float v)
 {
-    if(nearZero(v, 0.1f))
-        m_minAccel = 0.0f;
-    else
-        m_minAccel = v;
-
+    m_minAccel = v;
     return *this;
+}
+
+bool Car::onLeavingCurrentState()
+{
+    return StateMachine<CarState::Enum>::onLeavingCurrentState();
+}
+
+bool Car::onEnteringNewState(CarState::Enum next)
+{
+    switch(next) {
+    case CarState::Driving:
+        break;
+    case CarState::Breaking:
+        break;
+    case CarState::Rolling:
+        break;
+    case CarState::Standing:
+        this->accel(0.0f);
+        this->speed(0.0f);
+        break;
+    case CarState::Destroyed:
+        break;
+    }
+
+    return StateMachine<CarState::Enum>::onEnteringNewState(next);
 }
