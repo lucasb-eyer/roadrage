@@ -127,11 +127,11 @@ public:
     /// \return The Z coordinate of the vector.
     inline float z() const { return m_v[2]; };
     /// \param in_fX The new X coordinate of the vector.
-    inline Vector& setX(float in_fX) { m_v[0] = in_fX; return *this; };
+    inline Vector& x(float in_fX) { m_v[0] = in_fX; return *this; };
     /// \param in_fY The new Y coordinate of the vector.
-    inline Vector& setY(float in_fY) { m_v[1] = in_fY; return *this; };
+    inline Vector& y(float in_fY) { m_v[1] = in_fY; return *this; };
     /// \param in_fZ The new Z coordinate of the vector.
-    inline Vector& setZ(float in_fZ) { m_v[2] = in_fZ; return *this; };
+    inline Vector& z(float in_fZ) { m_v[2] = in_fZ; return *this; };
 
     /// Access the elements of this vector.
     /// \param idx The index of the element of this vector. This may only be a

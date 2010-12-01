@@ -52,6 +52,19 @@ Quaternion Camera::orbit() const
     return m_orbit;
 }
 
+Camera& Camera::orbitCenter(Vector v)
+{
+    m_orbitCenter = v;
+    this->updateVPCache();
+
+    return *this;
+}
+
+Vector Camera::orbitCenter() const
+{
+    return m_orbitCenter;
+}
+
 void RoadRage::Camera::updateVPCache()
 {
     // Caution here! The camera does the OPPOSITE of all to the scene.
@@ -60,6 +73,6 @@ void RoadRage::Camera::updateVPCache()
     // Thus, the camera is NOT placed at 1,0,0 - rather the scene is moved
     // by -1,0,0. This has the same effect, but opengl has no "camera".
 
-    AffineMatrix view = AffineMatrix::rotationQuat(m_rot) * AffineMatrix::translation(-m_pos) * AffineMatrix::rotationQuat(m_orbit);
+    AffineMatrix view = AffineMatrix::rotationQuat(m_rot) * AffineMatrix::translation(-m_pos) * AffineMatrix::rotationQuat(m_orbit) * AffineMatrix::translation(-m_orbitCenter);
     m_cachedViewProj = m_proj * view;
 }

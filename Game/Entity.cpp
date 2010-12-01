@@ -32,6 +32,9 @@ float VisibleEntity::ori() const
 
 VisibleEntity& VisibleEntity::ori(float v)
 {
+    while(v > 360.0f*deg2rad) v -= 360.0f*deg2rad;
+    while(v < -360.0f*deg2rad) v += 360.0f*deg2rad;
+
     m_fOrientation = v;
     return this->recalcCachedModelMatrix();
 }

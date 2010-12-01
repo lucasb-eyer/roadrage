@@ -132,13 +132,13 @@ public:
     /// \return The W coordinate of the quaternion.
     inline float w() const { return m_q[3]; };
     /// \param in_fX The new X coordinate of the quaternion.
-    inline Quaternion& setX(float in_fX) { m_q[0] = in_fX; return *this; };
+    inline Quaternion& x(float in_fX) { m_q[0] = in_fX; return *this; };
     /// \param in_fY The new Y coordinate of the quaternion.
-    inline Quaternion& setY(float in_fY) { m_q[1] = in_fY; return *this; };
+    inline Quaternion& y(float in_fY) { m_q[1] = in_fY; return *this; };
     /// \param in_fZ The new Z coordinate of the quaternion.
-    inline Quaternion& setZ(float in_fZ) { m_q[2] = in_fZ; return *this; };
+    inline Quaternion& z(float in_fZ) { m_q[2] = in_fZ; return *this; };
     /// \param in_fW The new W coordinate of the quaternion.
-    inline Quaternion& setW(float in_fW) { m_q[3] = in_fW; return *this; };
+    inline Quaternion& w(float in_fW) { m_q[3] = in_fW; return *this; };
 
     /// Access the elements of this quaternion.
     /// \param idx The index of the element of this quaternion. This may only be a

@@ -32,6 +32,7 @@ set(SRC ${PROJECT_SOURCE_DIR}/RoadRage.cpp
         ${PROJECT_SOURCE_DIR}/Conf/DefaultOptions.cpp
         ${PROJECT_SOURCE_DIR}/Conf/RoadRageDefaultSettings.cpp
         ${PROJECT_SOURCE_DIR}/Game/Avatar.cpp
+        ${PROJECT_SOURCE_DIR}/Game/Car.cpp
         ${PROJECT_SOURCE_DIR}/Game/Civilian.cpp
         ${PROJECT_SOURCE_DIR}/Game/Entity.cpp
         ${PROJECT_SOURCE_DIR}/Game/Game.cpp

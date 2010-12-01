@@ -228,7 +228,7 @@ Vector& Vector::normalize()
     if(nearZero(this->x()) &&
        nearZero(this->y()) &&
        nearZero(this->z()) ) {
-        return this->setX(0.0f).setY(0.0f).setZ(0.0f);
+        return this->x(0.0f).y(0.0f).z(0.0f);
     }
 
     float l = this->len();
@@ -238,26 +238,26 @@ Vector& Vector::normalize()
         if((this->x() >= this->y())
         && (this->x() >= this->z())
         && (this->x() >= 0.0f)) {
-            return this->setX(1.0f).setY(0.0f).setZ(0.0f);
+            return this->x(1.0f).y(0.0f).z(0.0f);
         } else if((this->x() <= this->y())
                && (this->x() <= this->z())
                && (this->x() <= 0.0f)) {
-            return this->setX(-1.0f).setY(0.0f).setZ(0.0f);
+            return this->x(-1.0f).y(0.0f).z(0.0f);
         } else {
             if(this->y() >= this->z()
             && this->y() >= 0.0f) {
-                return this->setX(0.0f).setY(1.0f).setZ(0.0f);
+                return this->x(0.0f).y(1.0f).z(0.0f);
             } else if(this->y() <= this->z()
                    && this->y() <= 0.0f) {
-                return this->setX(0.0f).setY(-1.0f).setZ(0.0f);
+                return this->x(0.0f).y(-1.0f).z(0.0f);
             } else {
-                return this->setX(0.0f).setY(0.0f).setZ(this->z() >= 0.0f ? 1.0f : -1.0f);
+                return this->x(0.0f).y(0.0f).z(this->z() >= 0.0f ? 1.0f : -1.0f);
             }
         }
     } else {
         // Follows the usual normalization rule.
         float m = 1.0f / l;
-        return this->setX(this->x()*m).setY(this->y()*m).setZ(this->z()*m);
+        return this->x(this->x()*m).y(this->y()*m).z(this->z()*m);
     }
 }
 

@@ -19,6 +19,9 @@ public:
     Camera& orbit(Quaternion q);
     Quaternion orbit() const;
 
+    Camera& orbitCenter(Vector v);
+    Vector orbitCenter() const;
+
     operator General4x4Matrix() const;
 
 protected:
@@ -28,6 +31,7 @@ private:
     Vector m_pos;
     Quaternion m_rot;
     Quaternion m_orbit;
+    Vector m_orbitCenter;
 
     General4x4Matrix m_proj;
     General4x4Matrix m_cachedViewProj;

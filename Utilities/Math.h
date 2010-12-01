@@ -9,26 +9,54 @@
 
 #include <algorithm>
 #include <stdlib.h>
+#include <cmath>
 
 #define D_FTS_EPSILON      0.0001
 
 namespace RoadRage {
+    // angles
     static const float pi = 3.141592f;
     static const float rad2deg = 57.29577f;
     static const float deg2rad = 0.01745329f;
 
+    // velocity
+    static const float kmh2ms = 0.2777778f;
+    static const float ms2kmh = 3.6f;
+    static const float mph2ms = 0.44704f;
+    static const float ms2mph = 2.236936f;
+
+    // acceleration
+    static const float kmhh2mss = kmh2ms / 3600.0f;
+    static const float mss2kmhh = ms2kmh * 3600.0f;
+    static const float kmhs2mss = kmh2ms;
+    static const float mss2kmhs = ms2kmh;
+    static const float mphh2mss = mph2ms / 3600.0f;
+    static const float mss2mphh = ms2mph * 3600.0f;
+    static const float mphs2mss = mph2ms;
+    static const float mss2mphs = ms2mph;
+
 /// Checks if a floating point value is nearly zero.
 /// \param val The value to check if it is near zero.
 /// \returns true if \a val is nearly zero.
-inline bool nearZero(const float& val) {
-    return ((val > 0.0f && val < D_FTS_EPSILON)
-         || (val < 0.0f && val > -D_FTS_EPSILON)
+inline bool nearZero(const float& val, const float& epsilon = D_FTS_EPSILON) {
+    return ((val > 0.0f && val < epsilon)
+         || (val < 0.0f && val > -epsilon)
          || (val == 0.0f));
 }
 
 template<class T>
-inline T clamp(T in_val, T in_min, T in_max) {
-    return std::min(std::max(in_val, in_max), in_min);
+inline T clamp(T& in_val, T in_min, T in_max) {
+    return in_val = std::max(std::min(in_val, in_max), in_min);
+}
+
+template<class T>
+inline T clamp(const T& in_val, T in_min, T in_max) {
+    return std::max(std::min(in_val, in_max), in_min);
+}
+
+template<class T>
+inline T lerp(T in_min, T in_max, float in_percent) {
+    return in_min + (in_max - in_min) * in_percent;
 }
 
 /// Get a random number between two numbers.

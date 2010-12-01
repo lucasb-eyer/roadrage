@@ -45,7 +45,7 @@ try {
     sf::ContextSettings ctx(24, 8, to<unsigned>(settings.get("AntiAliasing")), 3, 2);
     sf::VideoMode mode(to<unsigned>(settings.get("Width")), to<unsigned>(settings.get("Height")), 32);
 
-    sf::Window window(mode, _("Road Rage by Pompei2"), style, ctx);
+    sf::RenderWindow window(mode, _("Road Rage by Pompei2"), style, ctx);
 
     // Set the color and depth clear values
     glClearDepth(1.f);
@@ -55,10 +55,8 @@ try {
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
     // Load the game engine with the level we want to play.
-    Game game(Level::load(settings, "BlaBla"));
+    Game game(Level::load(settings, "BlaBla"), window.GetInput());
 
     // Start the game loop
     while(window.IsOpened())
@@ -96,7 +94,7 @@ try {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Draw the whole game.
-        game.render();
+        game.render(window);
 
         // Finally, display the rendered frame on screen
         window.Display();

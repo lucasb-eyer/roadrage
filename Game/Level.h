@@ -23,6 +23,9 @@ public:
     virtual void think(const GameClock& clock);
     virtual void render(const GameClock& clock);
 
+    Avatar& avatar();
+    const Avatar& avatar() const;
+
 protected:
     Level(const Configuration& in_settings, const std::string& in_sName);
 

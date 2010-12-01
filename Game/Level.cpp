@@ -48,10 +48,22 @@ Level::Ptr Level::load(const Configuration& in_settings, const std::string& in_s
 
 void Level::think(const GameClock& clock)
 {
-    const float speed = 5.0f;
-    m_cam.orbit(Quaternion::rotation(0.0f, 1.0f, 0.0f, clock.now()*speed*deg2rad));
+//     const float speed = 5.0f;
+//     m_cam.orbitCenter(Vector(5.0f, 0.0f, 0.0f));
+//     m_cam.orbit(Quaternion::rotation(0.0f, 1.0f, 0.0f, clock.now()*speed*deg2rad));
 
     m_pAvatar->think(clock);
+
+    // Follow the avatar.
+    m_cam.pos(Vector(0.0f, 0.0f, 10.0f));
+    m_cam.orbitCenter(m_pAvatar->pos());
+
+    // And the height/angle of the camera is dependend on the avatar's speed.
+    const float fMinAngle = 25.0f*deg2rad;
+    const float fMaxAngle = 45.0f*deg2rad;
+    float fSpeedPercent = m_pAvatar->speed() / m_pAvatar->maxSpeed();
+    float fAngle = lerp(fMaxAngle, fMinAngle, clamp(fSpeedPercent*2.0f, 0.0f, 1.0f));
+    m_cam.orbit(Quaternion::rotation(1.0f, 0.0f, 0.0f, -fAngle));
 
     for(auto i = m_civs.begin() ; i != m_civs.end() ; ++i) {
         (*i)->think(clock);
@@ -68,4 +80,14 @@ void Level::render(const GameClock& clock)
     for(auto i = m_civs.begin() ; i != m_civs.end() ; ++i) {
         (*i)->render(clock, m_cam);
     }
+}
+
+Avatar& Level::avatar()
+{
+    return *m_pAvatar;
+}
+
+const Avatar& Level::avatar() const
+{
+    return *m_pAvatar;
 }
